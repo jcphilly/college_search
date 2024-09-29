@@ -1,21 +1,58 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <base target="_top">
-  <?!= include('Css'); ?>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Viewer</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
-
 <body>
-  <div class="container">
-  <div class="alert alert-dark" role="alert">
-    <h4 class="text-center">Find Your Next Great Read!</h2>
-    <h5 class="text-center">Filter Books by Rating, Reviews, and More...</h4>
-  </div>
-  <div id="example-table"></div>
-  </div>
-  <?!= include('JavaScript'); ?>
-  <!--INCLUDE JavaScript.html FILE-->
-</body>
+    <h1>Google Sheets Data Viewer</h1>
+    <table id="data-table"></table>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        const SHEET_ID = '1IehVkDZnoid53uZP-ur3rDSbL7OHv1TPZJlm44nDSvM'; // Replace with your Google Sheet ID
+        const API_KEY = 'AIzaSyAdtvKp78Cf7_Q2_0eQ4zQUo0pxxkPi-qw'; // Replace with your Google API key
+        const RANGE = 'Sheet1!B1:AH102'; // Adjust the range as needed
+
+        $(document).ready(function() {
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+
+            $.getJSON(url, function(data) {
+                const rows = data.values;
+                let table = '<tr>';
+                // Create header row
+                for (let i = 0; i < rows[0].length; i++) {
+                    table += `<th>${rows[0][i]}</th>`;
+                }
+                table += '</tr>';
+
+                // Create data rows
+                for (let i = 1; i < rows.length; i++) {
+                    table += '<tr>';
+                    for (let j = 0; j < rows[i].length; j++) {
+                        table += `<td>${rows[i][j]}</td>`;
+                    }
+                    table += '</tr>';
+                }
+
+                $('#data-table').html(table);
+            });
+        });
+    </script>
+</body>
 </html>
