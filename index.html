@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Sheets with jQuery</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -19,7 +19,6 @@
             const sheetId = '1IehVkDZnoid53uZP-ur3rDSbL7OHv1TPZJlm44nDSvM'; // Replace with your Google Sheet ID
             const apiKey = 'AIzaSyAdtvKp78Cf7_Q2_0eQ4zQUo0pxxkPi-qw'; // Replace with your Google API key
             const range = 'Sheet1!B1:AH102'; // Adjust the range as needed
-
 
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
 
