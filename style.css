@@ -9,7 +9,7 @@ body {
 /* Container for the table with overflow */
 #data-container {
     margin: 20px auto;
-    max-width: 1000px; /* Increase max-width for the container */
+    max-width: 1600px; /* Increase max-width for the container */
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -24,7 +24,7 @@ table {
 
 /* Table header styles */
 th {
-    background-color: #007bff; /* Blue background */
+    background-color: #1d3c5e; /* Blue background */
     color: white; /* White text */
     padding: 12px;
     text-align: left;
