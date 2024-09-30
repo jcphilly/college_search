@@ -9,7 +9,7 @@ body {
 /* Container for the table with overflow */
 #data-container {
     margin: 20px auto;
-    max-width: 1000px; /* Increase max-width for the container */
+    max-width: 2000px; /* Increase max-width for the container */
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -40,10 +40,24 @@ table {
 
 /* Table header styles */
 th {
-    background-color: #007bff; /* Blue background */
+    background-color: #054a94; /* Blue background */
     color: white; /* White text */
     padding: 12px;
     text-align: left;
+}
+
+/* Freeze first column */
+td:first-child,
+th:first-child {
+    position: sticky;
+    left: 0;
+    background-color: #f4f4f4; /* Match container background */
+    z-index: 1; /* Ensure it stays on top */
+}
+
+/* Prevent word wrapping in the first column */
+td:first-child {
+    white-space: nowrap; /* Prevent word wrapping */
 }
 
 /* Table cell styles */
