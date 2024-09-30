@@ -1,16 +1,53 @@
-td, th {
-    border: 1px solid #777;
-    padding: 0.5rem;
-    text-align: center;
+/* Table Container */
+#data-container {
+    margin: 20px auto;
+    max-width: 800px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
- 
+
+/* Table styles */
 table {
+    width: 100%;
     border-collapse: collapse;
+    font-family: Arial, sans-serif;
 }
- 
-tbody tr:nth-child(odd) {
-    background: #eee;
+
+/* Table header styles */
+th {
+    background-color: #007bff; /* Blue background */
+    color: white; /* White text */
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
 }
-caption {
-    font-size: 0.8rem;
+
+/* Table cell styles */
+td {
+    padding: 10px;
+    border: 1px solid #ddd; /* Light gray border */
+}
+
+/* Alternate row background colors */
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* Light gray for even rows */
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff; /* White for odd rows */
+}
+
+/* Row hover effect */
+tr:hover {
+    background-color: #f1f1f1; /* Slightly darker on hover */
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    td, th {
+        padding: 8px;
+        font-size: 14px;
+    }
 }
