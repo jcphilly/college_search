@@ -3,57 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>College Viewer</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
+    <title>Google Sheets with jQuery</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
-    <h1>Google Sheets Data Viewer</h1>
-    <table id="data-table"></table>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        const SHEET_ID = '1IehVkDZnoid53uZP-ur3rDSbL7OHv1TPZJlm44nDSvM'; // Replace with your Google Sheet ID
-        const API_KEY = 'AIzaSyAdtvKp78Cf7_Q2_0eQ4zQUo0pxxkPi-qw'; // Replace with your Google API key
-        const RANGE = 'Sheet1!B1:AH102'; // Adjust the range as needed
+<div id="data-container"></div>
 
-        $(document).ready(function() {
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+<script>
+$(document).ready(function() {
+    const sheetId = '1IehVkDZnoid53uZP-ur3rDSbL7OHv1TPZJlm44nDSvM'; // Replace with your Google Sheet ID
+    const apiKey = 'AIzaSyAdtvKp78Cf7_Q2_0eQ4zQUo0pxxkPi-qw'; // Replace with your Google API key
+    const range = 'Sheet1!B1:AH102'; // Adjust the range as needed
+    
 
-            $.getJSON(url, function(data) {
-                const rows = data.values;
-                let table = '<tr>';
-                // Create header row
-                for (let i = 0; i < rows[0].length; i++) {
-                    table += `<th>${rows[0][i]}</th>`;
-                }
-                table += '</tr>';
-
-                // Create data rows
-                for (let i = 1; i < rows.length; i++) {
-                    table += '<tr>';
-                    for (let j = 0; j < rows[i].length; j++) {
-                        table += `<td>${rows[i][j]}</td>`;
-                    }
-                    table += '</tr>';
-                }
-
-                $('#data-table').html(table);
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
+    
+    $.getJSON(url, function(data) {
+        const rows = data.values;
+        let html = '<table border="1">';
+        
+        rows.forEach((row) => {
+            html += '<tr>';
+            row.forEach((cell) => {
+                html += `<td>${cell}</td>`;
             });
+            html += '</tr>';
         });
-    </script>
+        
+        html += '</table>';
+        $('#data-container').html(html);
+    }).fail(function() {
+        $('#data-container').html('<p>Error loading data.</p>');
+    });
+});
+</script>
+
 </body>
 </html>
