@@ -1,4 +1,12 @@
-/* Table Container */
+/* General body styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Container for the data */
 #data-container {
     margin: 20px auto;
     max-width: 800px;
@@ -12,36 +20,25 @@
 table {
     width: 100%;
     border-collapse: collapse;
-    font-family: Arial, sans-serif;
 }
 
 /* Table header styles */
 th {
-    background-color: #007bff; /* Blue background */
-    color: white; /* White text */
-    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
     text-align: left;
-    font-weight: bold;
 }
 
 /* Table cell styles */
 td {
     padding: 10px;
-    border: 1px solid #ddd; /* Light gray border */
-}
-
-/* Alternate row background colors */
-tr:nth-child(even) {
-    background-color: #f9f9f9; /* Light gray for even rows */
-}
-
-tr:nth-child(odd) {
-    background-color: #ffffff; /* White for odd rows */
+    border: 1px solid #ddd;
 }
 
 /* Row hover effect */
 tr:hover {
-    background-color: #f1f1f1; /* Slightly darker on hover */
+    background-color: #f1f1f1;
 }
 
 /* Responsive styles */
