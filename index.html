@@ -1,43 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Sheets with jQuery</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
+    <div id="data-container"
+        <h1>Google Sheets Data</h1>
+        <table id="data-table"></table>
+    </div>
+    <script>
+        $(document).ready(function () {
+            const sheetId = '1IehVkDZnoid53uZP-ur3rDSbL7OHv1TPZJlm44nDSvM'; // Replace with your Google Sheet ID
+            const apiKey = 'AIzaSyAdtvKp78Cf7_Q2_0eQ4zQUo0pxxkPi-qw'; // Replace with your Google API key
+            const range = 'Sheet1!B1:AH102'; // Adjust the range as needed
 
-<div id="data-container"></div>
 
-<script>
-$(document).ready(function() {
-    const sheetId = '1IehVkDZnoid53uZP-ur3rDSbL7OHv1TPZJlm44nDSvM'; // Replace with your Google Sheet ID
-    const apiKey = 'AIzaSyAdtvKp78Cf7_Q2_0eQ4zQUo0pxxkPi-qw'; // Replace with your Google API key
-    const range = 'Sheet1!B1:AH102'; // Adjust the range as needed
-    
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
 
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
-    
-    $.getJSON(url, function(data) {
-        const rows = data.values;
-        let html = '<table border="1">';
-        
-        rows.forEach((row) => {
-            html += '<tr>';
-            row.forEach((cell) => {
-                html += `<td>${cell}</td>`;
+            $.getJSON(url, function (data) {
+                const rows = data.values;
+                let html = '<table border="1">';
+
+                rows.forEach((row) => {
+                    html += '<tr>';
+                    row.forEach((cell) => {
+                        html += `<td>${cell}</td>`;
+                    });
+                    html += '</tr>';
+                });
+
+                html += '</table>';
+                $('#data-container').html(html);
+            }).fail(function () {
+                $('#data-container').html('<p>Error loading data.</p>');
             });
-            html += '</tr>';
         });
-        
-        html += '</table>';
-        $('#data-container').html(html);
-    }).fail(function() {
-        $('#data-container').html('<p>Error loading data.</p>');
-    });
-});
-</script>
-
+    </script>
 </body>
 </html>
