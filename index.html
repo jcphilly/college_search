@@ -14,6 +14,11 @@
         <table id="data-table"></table>
     </div>
     <script>
+        const sheetId = '1IehVkDZnoid53uZP-ur3rDSbL7OHv1TPZJlm44nDSvM'; // Replace with your Google Sheet ID
+        const apiKey = 'AIzaSyAdtvKp78Cf7_Q2_0eQ4zQUo0pxxkPi-qw'; // Replace with your Google API key
+        const range = 'Sheet1!B1:AH102'; // Adjust the range as needed
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
+
         $.getJSON(url, function (data) {
             const rows = data.values;
             let html = '<thead><tr>';
