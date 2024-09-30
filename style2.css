@@ -36,6 +36,38 @@ body {
 table {
     width: 120%; /* Increase the width of the table */
     border-collapse: collapse;
+    cursor: pointer; /* Change cursor to pointer for sortable columns */
+}
+
+/* Styles for sortable columns */
+th.sortable {
+    background-color: #073b72; /* Blue background */
+    color: white; /* White text */
+    padding: 12px;
+    text-align: left;
+    cursor: pointer; /* Change cursor to pointer */
+}
+
+th.sortable:hover {
+    background-color: #055a9c; /* Darker blue on hover */
+}
+
+/* Styles for sort indicators */
+th.sortable::after {
+    content: '\25B2'; /* Up arrow */
+    float: right;
+    margin-left: 5px;
+    opacity: 0.5; /* Slightly transparent */
+}
+
+th.sortable.sorted-asc::after {
+    content: '\25B2'; /* Up arrow */
+    opacity: 1; /* Fully opaque */
+}
+
+th.sortable.sorted-desc::after {
+    content: '\25BC'; /* Down arrow */
+    opacity: 1; /* Fully opaque */
 }
 
 /* Table header styles */
