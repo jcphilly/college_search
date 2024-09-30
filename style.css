@@ -51,9 +51,9 @@ tr:hover {
 }
 
 /* Responsive styles */
-@media (max-width: 600px) {
+@media (max-width: 800px) {
     td, th {
         padding: 8px;
-        font-size: 14px;
+        font-size: 12px;
     }
 }
