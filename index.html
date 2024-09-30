@@ -10,7 +10,8 @@
 </head>
 
 <body>
-    <div id="data-container" <h1>Google Sheets Data</h1>
+    <div id="data-container">
+        <input type="text" id="filter-input" placeholder="Search..." />
         <table id="data-table"></table>
     </div>
     <script>
@@ -40,10 +41,19 @@
 
             html += '</tbody>';
             $('#data-table').html(html);
+
+            // Filter functionality
+            $('#filter-input').on('keyup', function () {
+                const value = $(this).val().toLowerCase();
+                $('#data-table tbody tr').filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
         }).fail(function () {
             $('#data-container').html('<p>Error loading data.</p>');
         });
     </script>
+
 </body>
 
 </html>
