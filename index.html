@@ -52,6 +52,9 @@
                 html += '</tbody>';
                 $('#data-table').html(html);
 
+                 // Initialize DataTables
+                $('#data-table').DataTable();
+
                 // Populate dropdowns with unique values
                 uniqueValues.forEach((set, index) => {
                     set.forEach(value => {
