@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,86 +9,70 @@
     <link rel="stylesheet" href="style2.css"> <!-- Link to your CSS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
+
 <body>
 
-<div id="data-container">
-    <h1>The College Search</h1>
-    <input type="text" id="filter-input" placeholder="Search..." />
-    <table id="data-table"></table>
-</div>
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<script>
-$(document).ready(function() {
+    <div id="data-container">
+        <h1>The College Search</h1>
+        <input type="text" id="filter-input" placeholder="Search..." />
+        <table id="data-table"></table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
             const sheetId = '1IehVkDZnoid53uZP-ur3rDSbL7OHv1TPZJlm44nDSvM'; // Replace with your Google Sheet ID
             const apiKey = 'AIzaSyAdtvKp78Cf7_Q2_0eQ4zQUo0pxxkPi-qw'; // Replace with your Google API key
             const range = 'Sheet1!B1:AH102'; // Adjust the range as needed
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
 
-    $.getJSON(url, function(data) {
-        const rows = data.values;
-        let html = '<thead><tr>';
-        
-        // Create header row and dropdowns for filtering
-        rows[0].forEach((cell, index) => {
-            html += `<th>${cell}</th>`;
-            $('#column-filters').append(`<select class="sortable" data-index="${index}"><option value="">All</option></select>`);
-        });
-        html += '</tr></thead><tbody>';
+            $.getJSON(url, function (data) {
+                const rows = data.values;
+                let html = '<thead><tr>';
 
-        // Create data rows and populate dropdowns
-        const uniqueValues = Array.from({ length: rows[0].length }, () => new Set());
-
-        for (let i = 1; i < rows.length; i++) {
-            html += '<tr>';
-            rows[i].forEach((cell, index) => {
-                html += `<td>${cell}</td>`;
-                uniqueValues[index].add(cell); // Collect unique values for dropdowns
-            });
-            html += '</tr>';
-        }
-        
-        html += '</tbody>';
-        $('#data-table').html(html);
-
-        // Populate dropdowns with unique values
-        uniqueValues.forEach((set, index) => {
-            set.forEach(value => {
-                $(`.column-filter[data-index="${index}"]`).append(`<option value="${value}">${value}</option>`);
-            });
-        });
-
-        // Search functionality
-        $('#filter-input').on('keyup', function() {
-            const value = $(this).val().toLowerCase();
-            $('#data-table tbody tr').filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-            });
-        });
-
-        // Column filter functionality
-        $('.column-filter').on('change', function() {
-            const filters = [];
-            $('.column-filter').each(function() {
-                filters.push($(this).val());
-            });
-
-            $('#data-table tbody tr').filter(function() {
-                let showRow = true;
-                $(this).find('td').each(function(index) {
-                    const filterValue = filters[index];
-                    if (filterValue && $(this).text() !== filterValue) {
-                        showRow = false;
-                    }
+                // Create header row and dropdowns for filtering
+                rows[0].forEach((cell, index) => {
+                    html += `<th>${cell}</th>`;
+                    $('#column-filters').append(`<select class="sortable" data-index="${index}"><option value="">All</option></select>`);
                 });
-                $(this).toggle(showRow);
+                html += '</tr></thead><tbody>';
+
+                // Create data rows and populate dropdowns
+                const uniqueValues = Array.from({ length: rows[0].length }, () => new Set());
+
+                for (let i = 1; i < rows.length; i++) {
+                    html += '<tr>';
+                    rows[i].forEach((cell, index) => {
+                        html += `<td>${cell}</td>`;
+                        uniqueValues[index].add(cell); // Collect unique values for dropdowns
+                    });
+                    html += '</tr>';
+                }
+
+                html += '</tbody>';
+                $('#data-table').html(html);
+
+                // Populate dropdowns with unique values
+                uniqueValues.forEach((set, index) => {
+                    set.forEach(value => {
+                        $(`.column-filter[data-index="${index}"]`).append(`<option value="${value}">${value}</option>`);
+                    });
+                });
+
+                // Search functionality
+                $('#filter-input').on('keyup', function () {
+                    const value = $(this).val().toLowerCase();
+                    $('#data-table tbody tr').filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                    });
+                });
+
+            }).fail(function () {
+                $('#data-container').html('<p>Error loading data.</p>');
             });
         });
-    }).fail(function() {
-        $('#data-container').html('<p>Error loading data.</p>');
-    });
-});
-</script>
+    </script>
 
 </body>
+
 </html>
