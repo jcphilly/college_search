@@ -116,6 +116,6 @@ tr:hover {
 @media (max-width: 600px) {
     td, th {
         padding: 8px;
-        font-size: 14px;
+        font-size: 11px;
     }
 }
