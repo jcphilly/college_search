@@ -34,16 +34,22 @@ body {
 
 /* Table styles */
 table {
-    width: 120%; /* Increase the width of the table */
+    /* Allow the table to expand beyond the viewport when necessary, but don't force
+       it to be wider than its content. Using a minimum width helps maintain
+       readability on small screens while still enabling horizontal scrolling
+       when there are many columns. */
+    min-width: 100%;
     border-collapse: collapse;
     cursor: pointer; /* Change cursor to pointer for sortable columns */
+    font-size: 14px;
+    line-height: 1.4;
 }
 
 /* Styles for sortable columns */
 th.sortable {
     background-color: #073b72; /* Blue background */
     color: white; /* White text */
-    padding: 12px;
+    padding: 14px 12px;
     text-align: left;
     cursor: pointer; /* Change cursor to pointer */
 }
@@ -74,8 +80,14 @@ th.sortable.sorted-desc::after {
 th {
     background-color: #073b72; /* Blue background */
     color: white; /* White text */
-    padding: 12px;
+    padding: 14px 12px;
     text-align: left;
+    /* Make the header row stick to the top of the scrolling area so it
+       remains visible on both horizontal and vertical scroll. The high
+       z-index ensures it appears above the table body. */
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
 
 /* Freeze first column */
@@ -94,7 +106,7 @@ td:first-child {
 
 /* Table cell styles */
 td {
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ddd; /* Light gray border */
 }
 
@@ -114,8 +126,40 @@ tr:hover {
 
 /* Responsive styles */
 @media (max-width: 600px) {
+    /* On very small screens reduce padding and font sizes for better
+       readability and fit. Using relative units for font sizes helps
+       maintain consistency across devices. */
     td, th {
-        padding: 8px;
-        font-size: 11px;
+        padding: 8px 6px;
+        font-size: 12px;
     }
+    table {
+        font-size: 12px;
+    }
+    /* Reduce margins and padding inside the container on mobile to free
+       up space for the table. */
+    #data-container {
+        margin: 10px;
+        padding: 12px;
+    }
+    /* Shrink the heading size on mobile */
+    #data-container h1 {
+        font-size: 20px;
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+}
+
+/* Keep the page heading visible when scrolling. By making it sticky
+   relative to its container, the heading stays pinned to the top as the
+   user scrolls through long tables. The white background prevents
+   underlying content from showing through. */
+#data-container h1 {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    background-color: #fff;
+    padding: 16px 20px;
+    margin: -20px -20px 20px -20px;
+    border-bottom: 1px solid #eee;
 }
