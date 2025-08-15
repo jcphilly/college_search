@@ -1,80 +1,330 @@
-<!DOCTYPE html>
-<html lang="en">
+/* Body styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The College Search</title>
-    <link rel="stylesheet" href="style2.css"> <!-- Link to your CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-</head>
+/* Container for the table with overflow */
+#data-container {
+    margin: 20px auto;
+    max-width: 2000px; /* Increase max-width for the container */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow-x: auto; /* Enable horizontal scrolling */
+    padding: 20px; /* Add some padding */
+}
 
-<body>
+/* Input field for filtering */
+#filter-input {
+    margin-bottom: 20px;
+    padding: 10px;
+    width: calc(100% - 20px); /* Full width minus padding */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
 
-    <div id="data-container">
-        <h1>The College Search</h1>
-        <table id="data-table"></table>
-    </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            const sheetId = '1IehVkDZnoid53uZP-ur3rDSbL7OHv1TPZJlm44nDSvM'; // Replace with your Google Sheet ID
-            const apiKey = 'AIzaSyAdtvKp78Cf7_Q2_0eQ4zQUo0pxxkPi-qw'; // Replace with your Google API key
-            const range = 'Sheet1!B1:AH102'; // Adjust the range as needed
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
+/* Dropdown filters */
+.column-filter {
+    margin: 0 10px 20px 0;
+    padding: 10px;
+}
 
-            $.getJSON(url, function (data) {
-                const rows = data.values;
-                let html = '<thead><tr>';
+/* Table styles */
+table {
+    /* Allow the table to expand beyond the viewport when necessary, but don't force
+       it to be wider than its content. Using a minimum width helps maintain
+       readability on small screens while still enabling horizontal scrolling
+       when there are many columns. */
+    min-width: 100%;
+    border-collapse: collapse;
+    cursor: pointer; /* Change cursor to pointer for sortable columns */
+    font-size: 14px;
+    line-height: 1.4;
+}
 
-                // Create header row and dropdowns for filtering
-                rows[0].forEach((cell, index) => {
-                    html += `<th>${cell}</th>`;
-                    $('#column-filters').append(`<select class="sortable" data-index="${index}"><option value="">All</option></select>`);
-                });
-                html += '</tr></thead><tbody>';
+/* Styles for sortable columns */
+th.sortable {
+    background-color: #073b72; /* Blue background */
+    color: white; /* White text */
+    padding: 14px 12px;
+    text-align: left;
+    cursor: pointer; /* Change cursor to pointer */
+}
 
-                // Create data rows and populate dropdowns
-                const uniqueValues = Array.from({ length: rows[0].length }, () => new Set());
+th.sortable:hover {
+    background-color: #055a9c; /* Darker blue on hover */
+}
 
-                for (let i = 1; i < rows.length; i++) {
-                    html += '<tr>';
-                    rows[i].forEach((cell, index) => {
-                        html += `<td>${cell}</td>`;
-                        uniqueValues[index].add(cell); // Collect unique values for dropdowns
-                    });
-                    html += '</tr>';
-                }
+/* Styles for sort indicators */
+th.sortable::after {
+    content: '\25B2'; /* Up arrow */
+    float: right;
+    margin-left: 5px;
+    opacity: 0.5; /* Slightly transparent */
+}
 
-                html += '</tbody>';
-                $('#data-table').html(html);
+th.sortable.sorted-asc::after {
+    content: '\25B2'; /* Up arrow */
+    opacity: 1; /* Fully opaque */
+}
 
-                 // Initialize DataTables
-                $('#data-table').DataTable();
+th.sortable.sorted-desc::after {
+    content: '\25BC'; /* Down arrow */
+    opacity: 1; /* Fully opaque */
+}
 
-                // Populate dropdowns with unique values
-                uniqueValues.forEach((set, index) => {
-                    set.forEach(value => {
-                        $(`.column-filter[data-index="${index}"]`).append(`<option value="${value}">${value}</option>`);
-                    });
-                });
+/* Table header styles */
+th {
+    background-color: #073b72; /* Blue background */
+    color: white; /* White text */
+    padding: 14px 12px;
+    text-align: left;
+    /* Make the header row stick to the top of the scrolling area so it
+       remains visible on both horizontal and vertical scroll. The high
+       z-index ensures it appears above the table body. */
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
 
-                // Search functionality
-                $('#filter-input').on('keyup', function () {
-                    const value = $(this).val().toLowerCase();
-                    $('#data-table tbody tr').filter(function () {
-                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-                    });
-                });
+/* Freeze first column */
+td:first-child,
+th:first-child {
+    position: sticky;
+    left: 0;
+    background-color: #f4f4f4; /* Match container background */
+    z-index: 1; /* Ensure it stays on top */
+}
 
-            }).fail(function () {
-                $('#data-container').html('<p>Error loading data.</p>');
-            });
-        });
-    </script>
+/* Prevent word wrapping in the first column */
+td:first-child {
+    white-space: nowrap; /* Prevent word wrapping */
+}
 
-</body>
+/* Table cell styles */
+td {
+    padding: 12px;
+    border: 1px solid #ddd; /* Light gray border */
+}
 
-</html>
+/* Alternate row background colors */
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* Light gray for even rows */
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff; /* White for odd rows */
+}
+
+/* Row hover effect */
+tr:hover {
+    background-color: #e1e1e1; /* Slightly darker on hover */
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    /* On very small screens reduce padding and font sizes for better
+       readability and fit. Using relative units for font sizes helps
+       maintain consistency across devices. */
+    td, th {
+        padding: 8px 6px;
+        font-size: 12px;
+    }
+    table {
+        font-size: 12px;
+    }
+    /* Reduce margins and padding inside the container on mobile to free
+       up space for the table. */
+    #data-container {
+        margin: 10px;
+        padding: 12px;
+    }
+    /* Shrink the heading size on mobile */
+    #data-container h1 {
+        font-size: 20px;
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+}
+
+/* Keep the page heading visible when scrolling. By making it sticky
+   relative to its container, the heading stays pinned to the top as the
+   user scrolls through long tables. The white background prevents
+   underlying content from showing through. */
+#data-container h1 {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    background-color: #fff;
+    padding: 16px 20px;
+    margin: -20px -20px 20px -20px;
+    border-bottom: 1px solid #eee;
+}
+/* Body styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Container for the table with overflow */
+#data-container {
+    margin: 20px auto;
+    max-width: 2000px; /* Increase max-width for the container */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow-x: auto; /* Enable horizontal scrolling */
+    padding: 20px; /* Add some padding */
+}
+
+/* Input field for filtering */
+#filter-input {
+    margin-bottom: 20px;
+    padding: 10px;
+    width: calc(100% - 20px); /* Full width minus padding */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Dropdown filters */
+.column-filter {
+    margin: 0 10px 20px 0;
+    padding: 10px;
+}
+
+/* Table styles */
+table {
+    /* Allow the table to expand beyond the viewport when necessary, but don't force
+       it to be wider than its content. Using a minimum width helps maintain
+       readability on small screens while still enabling horizontal scrolling
+       when there are many columns. */
+    min-width: 100%;
+    border-collapse: collapse;
+    cursor: pointer; /* Change cursor to pointer for sortable columns */
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* Styles for sortable columns */
+th.sortable {
+    background-color: #073b72; /* Blue background */
+    color: white; /* White text */
+    padding: 14px 12px;
+    text-align: left;
+    cursor: pointer; /* Change cursor to pointer */
+}
+
+th.sortable:hover {
+    background-color: #055a9c; /* Darker blue on hover */
+}
+
+/* Styles for sort indicators */
+th.sortable::after {
+    content: '\25B2'; /* Up arrow */
+    float: right;
+    margin-left: 5px;
+    opacity: 0.5; /* Slightly transparent */
+}
+
+th.sortable.sorted-asc::after {
+    content: '\25B2'; /* Up arrow */
+    opacity: 1; /* Fully opaque */
+}
+
+th.sortable.sorted-desc::after {
+    content: '\25BC'; /* Down arrow */
+    opacity: 1; /* Fully opaque */
+}
+
+/* Table header styles */
+th {
+    background-color: #073b72; /* Blue background */
+    color: white; /* White text */
+    padding: 14px 12px;
+    text-align: left;
+    /* Make the header row stick to the top of the scrolling area so it
+       remains visible on both horizontal and vertical scroll. The high
+       z-index ensures it appears above the table body. */
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+/* Freeze first column */
+td:first-child,
+th:first-child {
+    position: sticky;
+    left: 0;
+    background-color: #f4f4f4; /* Match container background */
+    z-index: 1; /* Ensure it stays on top */
+}
+
+/* Prevent word wrapping in the first column */
+td:first-child {
+    white-space: nowrap; /* Prevent word wrapping */
+}
+
+/* Table cell styles */
+td {
+    padding: 12px;
+    border: 1px solid #ddd; /* Light gray border */
+}
+
+/* Alternate row background colors */
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* Light gray for even rows */
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff; /* White for odd rows */
+}
+
+/* Row hover effect */
+tr:hover {
+    background-color: #e1e1e1; /* Slightly darker on hover */
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    /* On very small screens reduce padding and font sizes for better
+       readability and fit. Using relative units for font sizes helps
+       maintain consistency across devices. */
+    td, th {
+        padding: 8px 6px;
+        font-size: 12px;
+    }
+    table {
+        font-size: 12px;
+    }
+    /* Reduce margins and padding inside the container on mobile to free
+       up space for the table. */
+    #data-container {
+        margin: 10px;
+        padding: 12px;
+    }
+    /* Shrink the heading size on mobile */
+    #data-container h1 {
+        font-size: 20px;
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+}
+
+/* Keep the page heading visible when scrolling. By making it sticky
+   relative to its container, the heading stays pinned to the top as the
+   user scrolls through long tables. The white background prevents
+   underlying content from showing through. */
+#data-container h1 {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    background-color: #fff;
+    padding: 16px 20px;
+    margin: -20px -20px 20px -20px;
+    border-bottom: 1px solid #eee;
+}
