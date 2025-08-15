@@ -91,17 +91,26 @@ th {
 }
 
 /* Freeze first column */
-td:first-child,
+/* Data cells in the first column use a light background with dark text.
+   They remain sticky on the left as the user scrolls horizontally. */
+td:first-child {
+    position: sticky;
+    left: 0;
+    background-color: #f5f5f5;
+    color: #333;
+    z-index: 1; /* Ensure it stays above other cells but below the header */
+    white-space: nowrap; /* Prevent word wrapping */
+}
+
+/* Header cell in the first column should retain the same look as other
+   header cells (blue background with white text) but with a higher
+   z-index to appear above the sticky data cells. */
 th:first-child {
     position: sticky;
     left: 0;
-    background-color: #f4f4f4; /* Match container background */
-    z-index: 1; /* Ensure it stays on top */
-}
-
-/* Prevent word wrapping in the first column */
-td:first-child {
-    white-space: nowrap; /* Prevent word wrapping */
+    background-color: #073b72;
+    color: #fff;
+    z-index: 3;
 }
 
 /* Table cell styles */
@@ -155,11 +164,14 @@ tr:hover {
    user scrolls through long tables. The white background prevents
    underlying content from showing through. */
 #data-container h1 {
+    /* Keep the heading pinned to the top of its container and separate it from
+       the table with a subtle border. Avoid negative margins to prevent
+       content from spilling outside the container. */
     position: sticky;
     top: 0;
     z-index: 3;
     background-color: #fff;
     padding: 16px 20px;
-    margin: -20px -20px 20px -20px;
+    margin-bottom: 20px;
     border-bottom: 1px solid #eee;
 }
