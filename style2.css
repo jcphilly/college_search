@@ -84,13 +84,9 @@ th {
     text-align: left;
 }
 
-/* Stick the header row to the top of the scrolling area. Use thead
-   selector to avoid conflicts with DataTables internal header clones. */
-table thead th {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}
+/* With the DataTables FixedHeader plugin enabled, header sticking is
+   handled by the plugin. We intentionally avoid additional sticky
+   positioning here to prevent conflicts. */
 
 /* Freeze first column */
 /* Data cells in the first column use a light background with dark text.
