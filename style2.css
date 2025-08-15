@@ -82,9 +82,11 @@ th {
     color: white; /* White text */
     padding: 14px 12px;
     text-align: left;
-    /* Make the header row stick to the top of the scrolling area so it
-       remains visible on both horizontal and vertical scroll. The high
-       z-index ensures it appears above the table body. */
+}
+
+/* Stick the header row to the top of the scrolling area. Use thead
+   selector to avoid conflicts with DataTables internal header clones. */
+table thead th {
     position: sticky;
     top: 0;
     z-index: 2;
@@ -156,6 +158,18 @@ tr:hover {
         font-size: 20px;
         margin-top: 0;
         margin-bottom: 10px;
+    }
+
+    /* Limit the width of the first column on very small screens to prevent
+       it from dominating the horizontal scroll. Allow the text to wrap
+       instead of forcing a single line so long school names don't create
+       excessively wide columns. */
+    td:first-child, th:first-child {
+        max-width: 160px;
+        min-width: 140px;
+        white-space: normal;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
 }
 
